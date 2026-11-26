@@ -1,0 +1,194 @@
+/* lit-paper-glass · style.css: the tokens, the look of the page structure that @core lays out (core/core.css), and
+   the default continuity of everything in it.
+
+   One ground that never moves: lit paper in the light theme (grey, brightest a little above the middle, darker
+   towards the edges, with a fine grain), pure black in the dark one. Every page is a borderless plane of content
+   stacked in depth (the page you leave shrinks, sinks and blurs behind the new one); a sheet comes up from below; in
+   front floats the tab row. Information is ink, dotted lines and dots; glass only on what floats. The light falls
+   from the top right: solid things throw their shadow down to the left; in the dark theme light things glow instead.
+*/
+
+@font-face { font-family: "Jost"; font-style: normal; font-weight: 300; font-display: swap; src: url("./fonts/jost-latin-300-normal.woff2") format("woff2"); }
+@font-face { font-family: "Jost"; font-style: normal; font-weight: 400 500; font-display: swap; src: url("./fonts/jost-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Jost"; font-style: normal; font-weight: 600 700; font-display: swap; src: url("./fonts/jost-latin-600-normal.woff2") format("woff2"); }
+
+/* ---- tokens ---- */
+:root {
+  /* the paper: its bright middle, its tone, its edges (--bg is the tone: the browser's bars, text on ink) */
+  --paper-hi: #fafafa; --paper: #ececec; --paper-lo: #d9d9d9;
+  --bg: #efefef; --fg: #1e1e1e; --fg2: #666666; --fg3: #999999;
+  --hair: rgb(30 30 30 / .14); --fill: rgb(0 0 0 / .045); --ink: rgb(30 30 30 / .1); --dot: #bdbdbd;
+  /* glass: a frosted sheet, lighter at its top left, with a bright edge on top and a faint one below */
+  --glass: rgb(250 250 250 / .4); --gl-a: rgb(252 252 252 / .42); --gl-b: rgb(246 246 246 / .26); --gl-c: rgb(244 244 244 / .32);
+  --glass-edge: rgb(255 255 255 / .62);
+  --float: -26px 36px 70px -38px rgb(0 0 0 / .3), -5px 9px 20px -12px rgb(0 0 0 / .12), inset 0 1px 0 rgb(255 255 255 / .8), inset 0 -1px 0 rgb(0 0 0 / .04), 0 0 0 .5px rgb(0 0 0 / .07);
+  /* a solid thing on the paper (an ink button, a dot): its shadow falls down to the left */
+  --lift: -8px 11px 18px -8px rgb(0 0 0 / .3), -2px 3px 5px -2px rgb(0 0 0 / .1);
+  /* a picture laid on the paper */
+  --print: -12px 16px 30px -18px rgb(0 0 0 / .32), -2px 3px 6px -3px rgb(0 0 0 / .08);
+  /* the grain of the paper (none in the dark theme) */
+  --grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .045 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  --lit: radial-gradient(ellipse 100% 82% at 55% 10%, var(--paper-hi) 0%, var(--paper) 50%, var(--paper-lo) 100%);
+  --wave-rest: rgb(30 30 30 / .2); --on-acc: #fafafa;
+  --acc-l: .52; --acc-c: .17;               /* an accent, where content has colours: oklch(l c <hue>) */
+  --like: #e0446f;
+  --sun: none; --moon: block;               /* which icon the theme button shows */
+  /* line icons stand off the paper a little: a faint shadow below them here; in the dark theme a faint glow in their
+     own colour instead (so a dimmer icon glows less), as light objects there do */
+  --icon-lift: drop-shadow(-.5px 1px 1px rgb(0 0 0 / .14));
+  /* Jost: light (300) for display, regular for text; Chinese falls to the system face */
+  --display: "Jost", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --text: "Jost", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  /* The app fills the whole screen at any width and in landscape: the pages, the glass and the depth behind them go
+     from edge to edge. Only the content keeps to a column (--col), centred: the gutters grow to centre it, and never
+     fall under the notch or the rounded corners (the side safe areas, in landscape). The tab row keeps to --bar. */
+  --col: 600px; --bar: 400px;
+  --edge-l: max(20px, var(--sal)); --edge-r: max(20px, var(--sar));
+  --gutter-l: max(var(--edge-l), calc((100vw - var(--col)) / 2)); --gutter-r: max(var(--edge-r), calc((100vw - var(--col)) / 2));
+  --spring: cubic-bezier(.3, 1.45, .45, 1);
+  --bar-h: 52px;                            /* the tab row's height */
+  --speed: .4s;                             /* default continuity: how long any change of content takes */
+  --glow: 0 0 0 transparent;                /* light objects glow in the dark theme */
+  color-scheme: light;
+}
+/* the dark theme: pure black everywhere, no grain; ink and paper change places, light things glow, the glass is smoked */
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper-hi: #000000; --paper: #000000; --paper-lo: #000000;
+  --bg: #000000; --fg: #e8e8e8; --fg2: #9a9a9a; --fg3: #5f5f5f;
+  --hair: rgb(232 232 232 / .14); --fill: rgb(255 255 255 / .07); --ink: rgb(232 232 232 / .14); --dot: #3a3a3a;
+  --glass: rgb(30 30 30 / .5); --gl-a: rgb(46 46 46 / .44); --gl-b: rgb(24 24 24 / .36); --gl-c: rgb(16 16 16 / .46);
+  --glass-edge: rgb(255 255 255 / .1);
+  --float: -26px 36px 70px -38px rgb(0 0 0 / .7), -5px 9px 20px -12px rgb(0 0 0 / .4), inset 0 1px 0 rgb(255 255 255 / .12), inset 0 -1px 0 rgb(0 0 0 / .35), 0 0 0 .5px rgb(0 0 0 / .5);
+  --lift: 0 0 26px rgb(255 255 255 / .34), 0 0 9px rgb(255 255 255 / .3); --print: none;
+  --grain: none; --lit: none;
+  --wave-rest: rgb(232 232 232 / .26); --on-acc: #0a0a0a;
+  --acc-l: .82; --acc-c: .13; --like: #ff6b9a; --sun: block; --moon: none;
+  --icon-lift: drop-shadow(0 0 3px color-mix(in srgb, currentColor 45%, transparent)); --glow: 0 0 22px rgb(255 255 255 / .3); color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper-hi: #000000; --paper: #000000; --paper-lo: #000000;
+  --bg: #000000; --fg: #e8e8e8; --fg2: #9a9a9a; --fg3: #5f5f5f;
+  --hair: rgb(232 232 232 / .14); --fill: rgb(255 255 255 / .07); --ink: rgb(232 232 232 / .14); --dot: #3a3a3a;
+  --glass: rgb(30 30 30 / .5); --gl-a: rgb(46 46 46 / .44); --gl-b: rgb(24 24 24 / .36); --gl-c: rgb(16 16 16 / .46);
+  --glass-edge: rgb(255 255 255 / .1);
+  --float: -26px 36px 70px -38px rgb(0 0 0 / .7), -5px 9px 20px -12px rgb(0 0 0 / .4), inset 0 1px 0 rgb(255 255 255 / .12), inset 0 -1px 0 rgb(0 0 0 / .35), 0 0 0 .5px rgb(0 0 0 / .5);
+  --lift: 0 0 26px rgb(255 255 255 / .34), 0 0 9px rgb(255 255 255 / .3); --print: none;
+  --grain: none; --lit: none;
+  --wave-rest: rgb(232 232 232 / .26); --on-acc: #0a0a0a;
+  --acc-l: .82; --acc-c: .13; --like: #ff6b9a; --sun: block; --moon: none;
+  --icon-lift: drop-shadow(0 0 3px color-mix(in srgb, currentColor 45%, transparent)); --glow: 0 0 22px rgb(255 255 255 / .3); color-scheme: dark }
+
+/* switching theme (theme.js): one picture of the screen gives way to another. From the button that was pressed the
+   new theme spreads in a circle; changed from elsewhere, it fades in over the old one. Under either the new theme is
+   simply there: nothing cross-fades by itself (.theme-jump). */
+::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal }
+::view-transition-old(root) { z-index: 1 }
+::view-transition-new(root) { z-index: 2 }
+html.theme-jump *, html.theme-jump *::before, html.theme-jump *::after { transition: none !important }
+/* without view transitions every colour cross-fades by itself: grounds, borders and shadows on every element, the
+   colour of text only on the elements that hold no element (see "default continuity" below for why) */
+html.theming *, html.theming *::before, html.theming *::after { transition: background-color .6s ease, border-color .6s ease, box-shadow .6s ease !important }
+html.theming *:not(:has(> :not(.hsw))) { transition: background-color .6s ease, color .6s ease, border-color .6s ease, box-shadow .6s ease !important }
+
+/* ---- the ground ---- */
+body { background: var(--bg); color: var(--fg); font-family: var(--text); font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased }
+/* the ground: the paper's light over the whole app, its grain on top (both nothing in the dark theme) */
+/* --chrome: how much of the screen's bottom the floating chrome takes (its measured height, and its distance from the
+   edge): what a root page keeps clear at its end, and what a toast rises above */
+/* --chrome-l / -r / -b: where the floating chrome lies. What stands in the tab row's last place without being part
+   of it (the ring, components.css) is placed by the same numbers. The row is as far from the screen's sides as
+   from its bottom (a phone held upright); where the screen is wide enough (held sideways, a tablet, a computer) it
+   is --bar wide, in the middle. */
+.app { background-color: var(--bg); background-image: var(--grain), var(--lit); background-size: 180px 180px, 100% 100%; --chrome: calc(var(--chrome-h, 52px) + 32px);
+  --chrome-l: max(var(--edge-l), var(--chrome-b), calc((100vw - var(--bar)) / 2)); --chrome-r: max(var(--edge-r), var(--chrome-b), calc((100vw - var(--bar)) / 2));
+  --chrome-b: max(var(--sab) - 4px, 26px) }
+.edge-top { background: var(--bg) }
+
+/* ---- a sheet: what lies under it drops back about a point a little above the middle ---- */
+.under { transform-origin: 50% 40% }
+
+/* ---- tabs cross-fade: the tab you leave fades out over the one you go to, which fades in (look.js, tabIn). A pure
+   fade: nothing shrinks, nothing blurs. (look.tabs.outMs keeps the old one there that long.) ---- */
+.tabview.out { animation: tab-out .3s ease-in-out both }
+@keyframes tab-out { from { opacity: 1 } to { opacity: 0 } }
+
+/* ---- pages (their turn is look.js: the values arrive as --back-t, --push-ms … on .ds) ---- */
+.layer { transform-origin: 50% 42% }
+/* the page slides in as a whole (look.stack.travel); on top of that its blocks arrive one after another */
+/* (fill backwards: once they have run they hold nothing, so the class can stay and nothing has to be undone) */
+@keyframes ds-in { from { opacity: 0; transform: translate3d(28px, 0, 0) } to { opacity: 1; transform: none } }
+.layer.entering .page-in > * { animation: ds-in calc(var(--push-ms) - 140ms) var(--push-ease) backwards }
+.layer.entering .page-in > *:nth-child(2) { animation-delay: 20ms }
+.layer.entering .page-in > *:nth-child(3) { animation-delay: 40ms }
+.layer.entering .page-in > *:nth-child(4) { animation-delay: 60ms }
+.layer.entering .page-in > *:nth-child(5) { animation-delay: 80ms }
+.layer.entering .page-in > *:nth-child(6) { animation-delay: 100ms }
+.layer.entering .page-in > *:nth-child(7) { animation-delay: 120ms }
+.layer.entering .page-in > *:nth-child(n+8) { animation-delay: 140ms }
+
+/* a page: content only, no ground of its own; a column of blocks inside the gutters, clear of the status bar */
+.page-in { display: flex; flex-direction: column; gap: 28px;
+  padding: calc(var(--sat) + 18px) var(--gutter-r) calc(var(--sab) + var(--chrome) + 56px) var(--gutter-l) }
+/* a pushed page starts below its back button, and covers the tab row: at the bottom it only keeps clear of the
+   ring, which stays where it is */
+.layer:not(.root) .page-in { padding-top: calc(var(--sat) + 66px); padding-bottom: calc(var(--chrome-b) + var(--bar-h) + 24px) }
+/* no title bar: the back button floats alone at the top left */
+.nav { top: calc(var(--sat) + 10px); left: var(--gutter-l); right: var(--gutter-r); display: flex; justify-content: space-between }
+
+/* ---- the floating chrome: the tab row, and what an app puts above it ---- */
+.chrome { left: var(--chrome-l); right: var(--chrome-r);
+  bottom: var(--chrome-b);               /* above the home indicator, clear of the screen's edge: the blur ends above it */
+  display: flex; flex-direction: column; gap: 8px }
+
+/* ---- the sheet: no ground of its own, like every page ---- */
+.sheet-in { display: flex; flex-direction: column; gap: 26px; padding: calc(var(--sat) + 50px) var(--gutter-r) calc(var(--chrome-b) + var(--bar-h) + 24px) var(--gutter-l) }
+/* The handle: a short dark line at the top, in the middle, bent into a shallow arrow pointing down. Two halves that
+   overlap by their round ends; each turns about the end they share. Straight while the sheet is being pulled (the
+   router ties them to the sheet's scroll, or sets .flat). A tap on it puts the sheet away. */
+.sheet-handle { top: calc(var(--sat) + 4px); left: 50%; width: 96px; height: 40px; margin-left: -48px; opacity: .6; transition: opacity .15s }
+.sheet-handle:active { opacity: .35 }
+.sheet-handle i { position: absolute; top: 50%; width: 21px; height: 5px; margin-top: -2.5px; border-radius: 2.5px; background: var(--fg); transition: transform .28s var(--spring) }   /* solid: the faintness is the handle's, so the overlap does not show */
+.sheet-handle i:first-of-type { right: calc(50% - 2.5px); transform-origin: calc(100% - 2.5px) 50%; transform: rotate(16deg) }
+.sheet-handle i:last-of-type { left: calc(50% - 2.5px); transform-origin: 2.5px 50%; transform: rotate(-16deg) }
+.sheet-handle.flat i { transform: none }
+
+/* ---- default continuity ----
+   What changes in the content of a page, a sheet or a floating layer (.float) changes over --speed, whoever changed
+   it: nothing has to ask for it. It is a list of properties, never `all`:
+
+   - What is not inherited (the colours of grounds and borders, shadows, opacity, transforms, sizes, spacing) is
+     eased on every element.
+   - What is inherited is another matter. A property an element inherits changes on every element under the one it
+     was set on; where each of those has a transition for it, WebKit runs them one level after the other (a child
+     starts when its parent has finished), so one change takes as many times --speed as the tree is deep. So what
+     is inherited and worth easing (the colour and size of text, an icon's stroke) is eased only where nothing can
+     inherit it on: on elements that hold no element themselves. Everything above them changes at once, and they
+     all ease together.
+   - `visibility` is never eased, nor anything else that puts things away. (@core hides a tab that is not showing by
+     its visibility: eased, a tab that had been left stayed on screen for seconds, over the one that shows.)
+
+   It stops at the content. The structure that @core moves (layers, the sheet, the chrome) follows a finger and may
+   never lag behind it. :where() keeps these rules weaker than every other, so a component's own transition wins;
+   one that only adds to the list starts it with var(--cont). */
+:root {
+  --cont: background-color var(--speed), border-color var(--speed), outline-color var(--speed), text-decoration-color var(--speed),
+    box-shadow var(--speed), opacity var(--speed), transform var(--speed), translate var(--speed), scale var(--speed), rotate var(--speed),
+    filter var(--speed), border-radius var(--speed), border-width var(--speed),
+    width var(--speed), height var(--speed), min-width var(--speed), min-height var(--speed), max-width var(--speed), max-height var(--speed),
+    top var(--speed), right var(--speed), bottom var(--speed), left var(--speed), margin var(--speed), padding var(--speed), gap var(--speed),
+    flex-grow var(--speed), flex-shrink var(--speed), flex-basis var(--speed), background-position var(--speed), background-size var(--speed);
+  --cont-text: color var(--speed), fill var(--speed), stroke var(--speed), font-size var(--speed), letter-spacing var(--speed), line-height var(--speed);
+}
+:where(.page-in, .sheet-in, .float) *, :where(.page-in, .sheet-in, .float) *::before, :where(.page-in, .sheet-in, .float) *::after { transition: var(--cont) }
+/* (an element that holds no element: the invisible switch of a tap, which an iPhone has in every button, is none) */
+:where(.page-in, .sheet-in, .float) :where(:not(:has(> :not(.hsw)))) { transition: var(--cont), var(--cont-text) }
+
+/* What is added to a page that is already there, fades in. Mark it yourself: only the
+   outermost element of what was added, so nothing fades inside something that fades. No fill: once it has run it
+   holds nothing. */
+@keyframes appear { from { opacity: 0 } }
+.appear { animation: appear var(--speed, .4s) ease }
+
+@media (prefers-reduced-motion: reduce) {
+  .tabview.out { animation-duration: .01s }
+  :where(.page-in, .sheet-in, .float) *, :where(.page-in, .sheet-in, .float) *::before, :where(.page-in, .sheet-in, .float) *::after { transition: none !important; animation: none !important }
+}

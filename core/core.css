@@ -1,0 +1,104 @@
+/* core.css: the structure the router's elements need in order to work. No colour, no size, no type, no timing: those
+   are the style's (styles/<name>/style.css), which is loaded after this file and may add to any rule here.
+
+   What lies where (router/Router.vue):
+     .app                         the app's container: the whole screen
+       .under > .views > .tabview > .stack.ds > .layer > [.lbody >] .page > .page-in        the pages
+       .sheet-veil                                                                          glass over .under while a sheet is up
+       .chrome                                                                              what floats over the root pages
+       .sheet > .sg-body > .sheet-panel > .sheet-scroll > .sheet-in                         the sheet
+   Variables core sets, for the style to use:
+     --sat / --sab / --sal / --sar   the safe areas
+     --chrome-h                      the measured height of .chrome (on .app)
+     --back-t --back-blur --back-o --far-t --far-blur --far-o --push-ms --push-ease   the page turn's look (on .ds), from look.stack */
+
+:root {
+  --sat: env(safe-area-inset-top, 0px); --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left, 0px); --sar: env(safe-area-inset-right, 0px);
+}
+
+/* ---- root: Framework7's core/app.less, rule for rule (#app there is .app here) ---- */
+/* interface text is never selected and a long press brings up no menu: on every element, not inherited from body
+   (text fields and [data-selectable] keep both; platform/guards.js cancels the events as well) */
+* { -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none }
+input, textarea, [contenteditable], [data-selectable], [data-selectable] * { -webkit-user-select: text; user-select: text }
+input[type="checkbox"], input[type="radio"], input[type="range"] { -webkit-user-select: none; user-select: none }
+/* only panning: no pinch zoom, no double-tap zoom */
+html { touch-action: pan-x pan-y; overscroll-behavior: none }
+html, body, .app { position: relative; height: 100%; width: 100%; overflow-x: hidden }
+body { margin: 0; padding: 0; width: 100%; overflow: hidden; overflow-y: scroll; scrollbar-width: none; -webkit-text-size-adjust: 100% }
+body::-webkit-scrollbar { display: none; width: 0 }
+/* iPhone home-screen app with a translucent status bar: height: 100% is short of the screen, 100vh is not */
+html.device-full-viewport, html.device-full-viewport body { height: 100vh }
+[hidden] { display: none !important }
+img { -webkit-user-drag: none }
+/* a native switch kept for its haptic and nothing else (platform/env.js, tapSwitch): one pixel, invisible, untouchable */
+.hsw { position: absolute; left: 0; top: 0; width: 1px; height: 1px; margin: 0; opacity: 0; pointer-events: none }
+/* A tap (controls/tap.js): every button is a <label>, so that on iPhone a finger on it ticks. A label is inline by
+   itself; one that stands for a block is laid out as one (anything the style says about its display wins: :where). */
+:where(label[data-tap]) { display: block; cursor: pointer }
+:where(label[data-tap="inline"]) { display: inline-block }
+
+/* ---- frame ---- */
+.app { display: flex; flex-direction: column; overflow: hidden; box-sizing: border-box }
+/* where 100vh is short of the screen by the top safe area and the page starts below the status bar (platform/boot.js):
+   the container moves up by the top safe area and is 100vh + top safe area tall */
+html.device-short-vh .app { position: fixed; left: 0; right: 0; top: calc(-1 * env(safe-area-inset-top, 0px)); height: calc(100vh + env(safe-area-inset-top, 0px)) }
+.under, .views, .tabview, .stack { position: absolute; inset: 0 }
+/* Everything a transition moves keeps a layer of its own for good (will-change: transform). A layer that comes and
+   goes with each transition is a change under the finger at the very moment the transition ends (gesture/quiet.js). */
+.under { will-change: transform }
+/* The chrome keeps a layer of its own. Nothing it sits in may carry an opacity below 1, a filter, or an animation of
+   either: glass inside it would stop blurring. A page in front covers it where it is (router/cover.js). */
+.chrome { position: absolute; z-index: 5; will-change: transform }
+/* one tab shows; the one just left stays over it for a moment (.out), for the style to let it go */
+.tabview { visibility: hidden }
+.tabview.on { visibility: visible }
+.tabview.out { visibility: visible; z-index: 1; pointer-events: none }
+
+/* ---- the page stack (router/stack.js) ---- */
+.ds { overflow: hidden }
+.layer { position: absolute; inset: 0; will-change: transform }
+.layer.root { display: flex; flex-direction: column }
+.lbody { display: flex; flex-direction: column; position: relative }
+/* at rest: the page right behind the one in front, the one behind that, and anything deeper (not rendered) */
+.layer.b1 { transform: var(--back-t); opacity: var(--back-o) }
+.layer.b2 { transform: var(--far-t); opacity: var(--far-o) }
+.layer.b3 { visibility: hidden }
+/* where the layers behind carry their blur themselves (blur-mode 'filter') */
+.ds .layer.b1.bf { filter: blur(var(--back-blur)) }
+.ds .layer.b2.bf { filter: blur(var(--far-blur)) }
+/* where a veil over them does (blur-mode 'veil') */
+.ds .veil { position: absolute; inset: 0; pointer-events: none }
+.ds .veil.off { visibility: hidden }
+
+/* A page always scrolls, by a pixel if its content is short, and keeps its overscroll to itself: a page that cannot
+   scroll would hand a drag on to the document. */
+.page { flex: 1; min-height: 0; overflow-x: hidden; overflow-y: auto; overscroll-behavior-y: contain; scrollbar-width: none }
+.page::-webkit-scrollbar { display: none }
+.page-in { min-height: calc(100% + 1px); box-sizing: border-box }
+/* the back button's row floats over a pushed page; only the button itself takes touches */
+.nav { position: absolute; z-index: 2; pointer-events: none }
+.nav .tap { pointer-events: auto; cursor: pointer }
+
+/* ---- the sheet (router/Sheet.vue) ---- */
+.sheet { position: absolute; inset: 0; z-index: 20; pointer-events: none }
+/* only the panel takes taps: above it, while it is pulled down or sliding away, they reach the page under it */
+.sheet-panel { position: relative; flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; pointer-events: auto }
+.sheet.sg-passing .sheet-panel { pointer-events: none }
+.sheet > .sg-body { display: flex; flex-direction: column }
+/* the sheet's content scrolls on its own; at its top a pull down is handed on to the sheet, which is how it is dismissed */
+.sheet-scroll { flex: 1; min-height: 0; overflow-x: hidden; overflow-y: auto; scrollbar-width: none }
+.sheet-scroll::-webkit-scrollbar { display: none }
+.sheet-handle { position: absolute; z-index: 2; cursor: pointer }
+/* over .under, and under the chrome: the veil that puts .under out of focus while a sheet is up */
+.sheet-veil { position: absolute; inset: 0; z-index: 4; pointer-events: none; visibility: hidden }
+
+/* ---- Safari, in a tab on iOS ----
+   Safari (iOS 26) lays a blur of its own over the page under the status bar. It leaves it out when a fixed element
+   of a solid colour lies across the top edge (WebKit: fixed container edges). <div class="edge-top"> in index.html
+   is that strip; the style gives it the ground's colour. Only in Safari's tabs: the home-screen app and an app's
+   WebView have no such blur, and keep the status bar clear. */
+.edge-top { display: none }
+html.device-ios:not(.device-standalone):not(.device-webview) .edge-top { display: block; position: fixed; z-index: 40; top: 0; left: 0; right: 0;
+  height: env(safe-area-inset-top, 0px); pointer-events: none }

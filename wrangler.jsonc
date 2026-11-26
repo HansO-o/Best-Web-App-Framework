@@ -1,0 +1,7 @@
+{
+  // Cloudflare Workers: static files only (bind this repo in Workers Builds and every push to main deploys).
+  "name": "best-web-app-framework",
+  "compatibility_date": "2025-09-01",
+  "build": { "command": "npm install && npm run build" },
+  "assets": { "directory": "./dist" }
+}

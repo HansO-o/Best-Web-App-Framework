@@ -1,0 +1,20 @@
+{
+  "name": "best-web-app-framework",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "像原生 App 一样的 Web App：CSS 原生滚动驱动的手势和路由、页签栏、滑动返回、触感。",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "vue": "^3.5.45"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.10",
+    "vite": "^8.3.7"
+  }
+}
