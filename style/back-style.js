@@ -4,8 +4,8 @@
 //   plain   no background at all: the arrow alone
 const KEY = 'app:back';
 export const BACK_STYLES = [
-  { key: 'glass', title: '无边框毛玻璃' },
-  { key: 'plain', title: '只有箭头' },
+  { key: 'glass', title: 'Glass' },
+  { key: 'plain', title: 'Arrow only' },
 ];
 const valid = (m) => BACK_STYLES.some((x) => x.key === m);
 export function getBackStyle() {

@@ -20,24 +20,24 @@ const open = () => window.open('https://github.com/HansO-o/Best-Web-App-Framewor
 <template>
   <div class="head">
     <div class="eyebrow">Settings</div>
-    <div class="title">设置</div>
+    <div class="title">Settings</div>
   </div>
   <div class="sec">
-    <div class="sec-title">主题</div>
-    <Segmented id="theme-pick" :items="['浅色', '深色', '跟随系统']" :index="theme" label="主题" @change="pickTheme" />
-    <div class="fine">浅色是一张有光的纸，深色是纯黑。新主题从按下的地方扩散开。</div>
+    <div class="sec-title">Theme</div>
+    <Segmented id="theme-pick" :items="['Light', 'Dark', 'System']" :index="theme" label="Theme" @change="pickTheme" />
+    <div class="fine">Light is lit paper, dark is pure black. The new theme spreads from where you pressed.</div>
   </div>
   <div class="sec">
-    <div class="sec-title">返回键</div>
-    <Segmented :items="BACK_STYLES.map((s) => s.title)" :index="back" label="返回键" @change="pickBack" />
+    <div class="sec-title">Back button</div>
+    <Segmented :items="BACK_STYLES.map((s) => s.title)" :index="back" label="Back button" @change="pickBack" />
   </div>
   <div class="sec">
-    <div class="sec-title">关于</div>
+    <div class="sec-title">About</div>
     <div class="list">
       <Tap class="line" @tap="open">
         <div class="grow"><div class="line-title">GitHub</div><div class="set-note">HansO-o/Best-Web-App-Framework · MIT</div></div>
       </Tap>
-      <div class="line"><div class="grow"><div class="line-title">加到主屏幕</div><div class="set-note">Safari 分享 → 添加到主屏幕：全屏、透明状态栏，和原生 App 一样</div></div></div>
+      <div class="line"><div class="grow"><div class="line-title">Add to Home Screen</div><div class="set-note">In Safari: Share → Add to Home Screen. Full screen with a clear status bar, like a native app</div></div></div>
     </div>
   </div>
 </template>

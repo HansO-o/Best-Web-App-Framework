@@ -1,7 +1,7 @@
 <!--
   Router: the whole of an app's navigation, with nothing of its look.
 
-    <Router :look="look" :tabs="[{ key: 'home', label: '发现', … }, …]" :sheets="{ player: { label: '播放器' } }">
+    <Router :look="look" :tabs="[{ key: 'home', label: 'Discover', … }, …]" :sheets="{ player: { label: 'Player' } }">
       <template #root="{ tab, nav, front }">…the first page of that tab…</template>
       <template #page="{ tab, name, params, nav, front }">…a page pushed by name…</template>
       <template #sheet="{ name, params, nav }">…what is in the sheet…</template>

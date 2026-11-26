@@ -86,7 +86,7 @@ export const look = {
     travel: 0.16,               // the new page slides in over this share of the screen; its blocks arrive one after another (style.css)
     back: BACK, far: FAR,
     blur: true, fade: true,
-    backIcon: BACK_ICON, backClass: 'glass', backLabel: '返回',
+    backIcon: BACK_ICON, backClass: 'glass', backLabel: 'Back',
   },
   // a sheet: what lies under it looks like a page behind another
   sheet: {

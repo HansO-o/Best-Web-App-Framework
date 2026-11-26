@@ -247,7 +247,7 @@ const onHandleKey = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.prevent
   <div ref="el" class="sheet" role="dialog" :aria-label="label">
     <div ref="body">
       <div class="sheet-panel">
-        <label v-if="look.handle" ref="handle" class="sheet-handle" role="button" tabindex="0" :aria-label="closeLabel || '收起'"
+        <label v-if="look.handle" ref="handle" class="sheet-handle" role="button" tabindex="0" :aria-label="closeLabel || 'Close'"
           @click="onHandle" @keydown="onHandleKey">
           <input v-if="tapSwitch" type="checkbox" :switch.attr="''" class="hsw" aria-hidden="true">
           <i /><i />

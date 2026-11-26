@@ -3,7 +3,7 @@
   (a finger, a mouse drag, its handle, Escape). Once up it is a page like any other. What was on screen before stays
   behind it and recedes, as a page does behind the next one.
 
-    <Sheet :look="look.sheet" label="播放器" :open="!!sheet" :request="sheet" :under="underEl" :veil="veilEl"
+    <Sheet :look="look.sheet" label="Player" :open="!!sheet" :request="sheet" :under="underEl" :veil="veilEl"
       @cover="(f) => …" @closed="…">…what is in it…</Sheet>
 
     look         the sheet's look (./SheetSurface.vue says what each value means)

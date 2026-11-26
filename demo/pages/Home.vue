@@ -8,38 +8,38 @@ const nav = useNav();
 <template>
   <div class="head">
     <div class="eyebrow">Best Web App Framework</div>
-    <div class="title">像原生 App 的网页</div>
+    <div class="title">A web app that feels native</div>
   </div>
-  <div class="lede">翻页、返回、面板、页签，全是浏览器原生的吸附滚动：跟手、惯性、回弹都在合成线程上算，主线程再忙也不掉帧。iPhone 上随 ProMotion 跑到 120fps。</div>
+  <div class="lede">Page turns, swipe back, sheets and tabs are all the browser's own snap scrolling: tracking, momentum and bounce run on the compositor thread, so a busy main thread never drops a frame. On iPhone, pages turn at 120fps with ProMotion.</div>
   <div class="stats">
-    <div class="stat"><div class="stat-v">120</div><div class="stat-l">fps 翻页</div></div>
-    <div class="stat"><div class="stat-v">CSS</div><div class="stat-l">原生滚动驱动</div></div>
-    <div class="stat"><div class="stat-v">0</div><div class="stat-l">浏览器历史</div></div>
+    <div class="stat"><div class="stat-v">120</div><div class="stat-l">fps page turns</div></div>
+    <div class="stat"><div class="stat-v">CSS</div><div class="stat-l">native scrolling</div></div>
+    <div class="stat"><div class="stat-v">0</div><div class="stat-l">history entries</div></div>
   </div>
   <div class="sec">
-    <div class="sec-title">试一试</div>
+    <div class="sec-title">Try it</div>
     <div class="list">
       <Tap class="line" @tap="nav.push('detail', { n: 1 })">
-        <div class="grow"><div class="line-title">推入一页</div><div class="set-note">在页面任意位置向右滑返回</div></div>
+        <div class="grow"><div class="line-title">Push a page</div><div class="set-note">Swipe right anywhere on it to go back</div></div>
         <Icon name="go" :size="18" />
       </Tap>
       <Tap class="line" @tap="nav.openSheet('panel')">
-        <div class="grow"><div class="line-title">打开全屏面板</div><div class="set-note">下拉、点把手或按 Esc 收起</div></div>
+        <div class="grow"><div class="line-title">Open a sheet</div><div class="set-note">Pull down, tap the handle or press Esc to close</div></div>
         <Icon name="up" :size="18" />
       </Tap>
       <Tap class="line" @tap="nav.push('detail', { n: 3 })">
-        <div class="grow"><div class="line-title">直接到第三层</div><div class="set-note">页签栏按住横滑，圆点跟着手指走</div></div>
+        <div class="grow"><div class="line-title">Jump three pages deep</div><div class="set-note">Hold the tab bar and slide: the dot follows your finger</div></div>
         <Icon name="go" :size="18" />
       </Tap>
     </div>
   </div>
   <div class="sec">
-    <div class="sec-title">为什么快</div>
+    <div class="sec-title">Why it is fast</div>
     <div class="list">
-      <div class="line"><div class="grow"><div class="line-title">CSS 吸附滚动当手势</div><div class="set-note">页面是一个 scroll-snap 容器，手指拖的是系统的滚动</div></div></div>
-      <div class="line"><div class="grow"><div class="line-title">滚动时间线驱动动画</div><div class="set-note">后面那页的缩小、模糊、淡出跟 animation-timeline 走</div></div></div>
-      <div class="line"><div class="grow"><div class="line-title">只动 transform 和 opacity</div><div class="set-note">跟手的东西永远不触发布局和重绘</div></div></div>
-      <div class="line"><div class="grow"><div class="line-title">过渡结束那一刻什么都不改</div><div class="set-note">离开的页面等手指和滚动都安静了才移除</div></div></div>
+      <div class="line"><div class="grow"><div class="line-title">Snap scrolling is the gesture</div><div class="set-note">Each page is a scroll-snap container: your finger drags the system's own scroll</div></div></div>
+      <div class="line"><div class="grow"><div class="line-title">Scroll timelines drive the motion</div><div class="set-note">The page behind shrinks, blurs and fades on animation-timeline</div></div></div>
+      <div class="line"><div class="grow"><div class="line-title">Only transform and opacity</div><div class="set-note">Nothing under your finger ever triggers layout or paint</div></div></div>
+      <div class="line"><div class="grow"><div class="line-title">Nothing changes as a transition ends</div><div class="set-note">A page that left is removed only once touches and scrolling are quiet</div></div></div>
     </div>
   </div>
 </template>

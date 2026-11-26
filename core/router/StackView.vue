@@ -2,7 +2,7 @@
   One tab's page stack: a PageStack (./stack.js) whose pages hold what the app puts into them. The stack owns the
   layers, the gestures and what the layers behind look like; Vue only puts content into each page (a Teleport).
 
-    <StackView :tab="{ key: 'home', label: '发现' }" :look="look.stack" :active="tab === 'home'">
+    <StackView :tab="{ key: 'home', label: 'Discover' }" :look="look.stack" :active="tab === 'home'">
       <template #root="{ nav, front }">…the tab's first page…</template>
       <template #page="{ name, params, nav, front }">…a pushed page…</template>
     </StackView>
@@ -98,7 +98,7 @@ onMounted(() => {
 watch(sig, () => follow(wiring.instant));
 watch(() => wiring.route.value, () => follow(true));        // another route object: its pages are in place at once
 watch(() => props.look.backLabel, (label) => {
-  hostEl.value?.querySelectorAll('.nav > [role="button"]').forEach((el) => el.setAttribute('aria-label', label || '返回'));
+  hostEl.value?.querySelectorAll('.nav > [role="button"]').forEach((el) => el.setAttribute('aria-label', label || 'Back'));
 }, { flush: 'post' });
 
 // ---- navigation, as the pages of this tab see it

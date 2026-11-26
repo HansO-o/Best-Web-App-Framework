@@ -1,6 +1,6 @@
 // A toast: a line of glass that comes down from the top and goes by itself.
 //
-//   toast('已收藏');            from anywhere
+//   toast('Saved');            from anywhere
 //   <Toast />                   once, among the Router's children
 import { defineComponent, h, ref } from 'vue';
 

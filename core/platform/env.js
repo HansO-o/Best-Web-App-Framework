@@ -17,7 +17,7 @@ export const canVibrate = typeof navigator !== 'undefined' && typeof navigator.v
 
 /**
  * iPhone: the only haptic a web page gets is the one a finger on a native switch (<input type="checkbox" switch>)
- * plays (README.md, "触感"). Components render such a switch only where this is true: anywhere else
+ * plays (README.md, "Haptics"). Components render such a switch only where this is true: anywhere else
  * a click would focus it, and the browser scrolling it into view would cut the page's own smooth scrolls short. It
  * never gets a tabindex.
  */

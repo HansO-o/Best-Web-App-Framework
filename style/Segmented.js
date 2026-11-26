@@ -1,7 +1,7 @@
 // Segmented: choose one of a few. The tab row at the bottom of an app is one too: the same control in another look.
 //
-//   <Segmented :items="['WAV', 'MP3']" :index="i" label="下载格式" @change="(k) => (i = k)" />
-//   <Segmented look="tabs" :items="[{ key: 'home', label: '发现', icon: 'compass' }, …]" :index="tab"
+//   <Segmented :items="['WAV', 'MP3']" :index="i" label="Format" @change="(k) => (i = k)" />
+//   <Segmented look="tabs" :items="[{ key: 'home', label: 'Discover', icon: 'compass' }, …]" :index="tab"
 //     @change="setTab" @reselect="popToRoot" />                           (or <TabBar :tabs="…" />, the same thing)
 //
 //   items       strings, or { key, label, icon } (icon: a name from icon-paths.js, or a vnode; with an icon, the
@@ -151,7 +151,7 @@ export const Segmented = defineComponent({
 /** The bottom tab row: a Segmented in its 'tabs' look. `tabs`: [{ key, label, icon }]. */
 export const TabBar = defineComponent({
   name: 'TabBar',
-  props: { tabs: { type: Array, default: () => [] }, index: { type: Number, default: 0 }, label: { type: String, default: '页签' } },
+  props: { tabs: { type: Array, default: () => [] }, index: { type: Number, default: 0 }, label: { type: String, default: 'Tabs' } },
   emits: ['change', 'reselect'],
   setup(props, { emit, slots }) {
     return () => h(Segmented, {

@@ -225,7 +225,7 @@ export function PageStack(host, look) {
     const el = document.createElement('div'); el.className = 'layer';
     const body = document.createElement('div'); body.className = 'lbody';
     // the back button: there from the first frame, on every device (the one way back that needs no gesture)
-    body.innerHTML = `<div class="nav"><label class="tap ${look.backClass || ''}" role="button" tabindex="0" aria-label="${look.backLabel || '返回'}">` +
+    body.innerHTML = `<div class="nav"><label class="tap ${look.backClass || ''}" role="button" tabindex="0" aria-label="${look.backLabel || 'Back'}">` +
       (tapSwitch ? '<input type="checkbox" switch class="hsw" aria-hidden="true">' : '') + (look.backIcon || '‹') + '</label></div>' +
       '<div class="page"><div class="page-in"></div></div>';
     el.appendChild(body);

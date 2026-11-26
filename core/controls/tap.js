@@ -1,11 +1,11 @@
 // Tap: what makes an element a button, on every device. Behaviour only: how a pressed button looks is the style's
 // ([data-tap] in its stylesheet).
 //
-//   <Tap label="添加" @tap="add">…</Tap>                                       in a template
+//   <Tap label="Add" @tap="add">…</Tap>                                       in a template
 //   h('label', { ...tapAttrs(), ...tapHandlers(add) }, [tapSwitchNode(), …])      the same thing in a render function
 //
 // - iPhone: the only haptic a web page gets is the one a finger on a <label> around a native switch plays
-//   (../platform/env.js, tapSwitch; README.md, "触感"). So a tap is a <label>, on every device (one
+//   (../platform/env.js, tapSwitch; README.md, "Haptics"). So a tap is a <label>, on every device (one
 //   markup everywhere), with an invisible switch in it where that ticks (.hsw, core.css). The label hands the click
 //   on to its switch, and that second click comes back up through the label: it is not a tap.
 // - Android: one tick through the vibration API.
